@@ -6,7 +6,7 @@
 
 3.) You can remove the executable by typing 'make clean'.
 
-4.) You can remake the executable bt typing 'make re'.
+4.) You can remake the executable by typing 'make re'.
 
 4.) Usage: type './gnl <filename>'. For example: './gnl in.txt'.
 
