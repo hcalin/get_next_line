@@ -30,6 +30,7 @@ int	get_next_line(int  fd, char **line)
 {
 	if (fd < 0 || !line)
 		return (-1);
+	*line = (char*)malloc(2);
 	*line[0] = '\0';
 	return (get_line(fd,line));
 }
@@ -50,12 +51,10 @@ int	main(int argc, char **argv)
 	}
 	fd = open(argv[1], O_RDONLY);
 	line = NULL;
-	line = (char*)malloc(1000);
 	while ((sz = get_next_line(fd, &line)) > 0)
 	{
 		printf("%s\n",line);
 		free(line);
-		line = (char*)malloc(1000);
 	}
 	return (0);
 }
