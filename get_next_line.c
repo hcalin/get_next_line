@@ -1,27 +1,26 @@
 #include "libft/libft.h"
 #include "get_next_line.h"
 
-int	get_line(int fd, char **line,char *buff)
+int	get_line(int fd, char **line)
 {
 	static int nx;
+	char *buff;
 
+	buff = (char*)malloc(3);
 	while ((nx = read(fd, buff, 1)))
 	{
 		if ( nx == -1)
 			return (-1);
 		if (buff[0] == '\n')
-			return (1);
+			break;
 		buff[1] = '\0';
 		if (!*line && buff[0])
 			*line = ft_strdup(buff);
 		else
 			*line = ft_strjoin(*line,buff);
-		if (!buff[0] && !*line)
-			return (0);
-		else if (!buff[0])
-			return (1);
 	}
-	if (nx == 0 && line[0])
+	free(buff);
+	if (!nx && **line)
 		nx = 1;
 	return (nx);
 }
@@ -29,14 +28,10 @@ int	get_line(int fd, char **line,char *buff)
 
 int	get_next_line(int  fd, char **line)
 {
-	char		*buff;
-
-	if (fd < 0 || !line || BUFF_SIZE < 1)
+	if (fd < 0 || !line)
 		return (-1);
-	*line = NULL;
-	if (!(buff = (char*)malloc(3)))
-		return (-1);
-	return (get_line(fd,line, buff));
+	*line[0] = '\0';
+	return (get_line(fd,line));
 }
 
 int	main(int argc, char **argv)
@@ -55,12 +50,12 @@ int	main(int argc, char **argv)
 	}
 	fd = open(argv[1], O_RDONLY);
 	line = NULL;
-	line = (char*)malloc(100);
+	line = (char*)malloc(1000);
 	while ((sz = get_next_line(fd, &line)) > 0)
 	{
 		printf("%s\n",line);
 		free(line);
-		line = (char*)malloc(50);
+		line = (char*)malloc(1000);
 	}
 	return (0);
 }
